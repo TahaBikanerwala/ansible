@@ -8,7 +8,7 @@
       update_cache: true
     when: ansible_distribution == "Ubuntu"
 
-  - name: Uinstall Apache2 package
+  - name: Uninstall Apache2 package
     apt:
       name: apache2
       state: absent
@@ -25,13 +25,13 @@
       update_cache: true
     when: ansible_distribution == "CentOS"
 
-  - name: Install Apache2 package
+  - name: Uinstall Apache2 package
     dnf:
       name: httpd
       state: absent
     when: ansible_distribution == "CentOS"
 
-  - name: Add PHP support for Apache
+  - name: Remove PHP support for Apache
     dnf:
       name: php
       state: absent
