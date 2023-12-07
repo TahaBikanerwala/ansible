@@ -6,13 +6,33 @@
   - name: Update index
     apt:
       update_cache: true
+    when: ansible_distribution == "Ubuntu"
 
   - name: Uinstall Apache2 package
     apt:
       name: apache2
       state: absent
+    when: ansible_distribution == "Ubuntu"
 
   - name: Remove PHP support for Apache
     apt:
       name: libapache2-mod-php
       state: absent
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Update index
+    dnf:
+      update_cache: true
+    when: ansible_distribution == "CentOS"
+
+  - name: Install Apache2 package
+    dnf:
+      name: httpd
+      state: absent
+    when: ansible_distribution == "CentOS"
+
+  - name: Add PHP support for Apache
+    dnf:
+      name: php
+      state: absent
+    when: ansible_distribution == "CentOS"
