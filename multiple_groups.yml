@@ -1,0 +1,60 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+  - name: Install updates (Ubuntu)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install updates (CentOS)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+
+- hosts: web_server
+  become: true
+  tasks:
+  - name: Install Apache and PHP for Group1
+    apt:
+      name:
+        - apache2
+        - php
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install Apache and PHP for Group1
+    dnf:
+      name:
+        - apache2
+        - php
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+- hosts: db_server
+  become: true
+  tasks:
+  - name: Install MariaDB(Ubuntu)
+    apt:
+      name: mariadb-server
+      state: latest
+    when: ansible_distribution == "Ubuntu"
+
+  - name: Install MariaDB(CentOS)
+    dnf:
+      name: mariadb
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+- hosts: file_server
+  become: true
+  tasks:
+  - name: Install Samba(Ubuntu & CentOS)
+    package:
+      name: samba
+      state: latest
