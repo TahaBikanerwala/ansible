@@ -1,0 +1,44 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Task 1 - Install updates(CentOS)
+    tags: always
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: Task 1 - Install updates(Ubuntu)
+    tags: always
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Adding user to root group
+    tags: always
+    user:
+      name: ansible_admin
+      groups: root
+
+  - name: Add ssh key for new user
+    tags: always
+    authorized_key:
+      user: ansible_admin
+      key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKZ5eqgswBOJlNefcavyT6PGb16Wn3BFOKTCIjbhyIbK ansible"
+
+  - name: add sudoers file for ansible_admin
+    tags: always
+    copy:
+      src: sudoer_ansible_admin
+      dest: /etc/sudoers.d/ansible_admin
+      owner: root
+      group: root
+      mode: 0440
