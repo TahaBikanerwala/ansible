@@ -1,0 +1,5 @@
+- name: Add ssh key for new user
+  tags: always
+  authorized_key:
+    user: ansible_admin
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKZ5eqgswBOJlNefcavyT6PGb16Wn3BFOKTCIjbhyIbK ansible"

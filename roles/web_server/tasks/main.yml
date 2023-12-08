@@ -1,0 +1,47 @@
+- name: Install Apache and PHP for Web servers(Ubuntu)
+  tags: apache,apache2,ubuntu
+  apt:
+    name:
+      - apache2
+      - php
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Apache and PHP for Web servers(CentOS)
+  dnf:
+    name:
+    tags: apache,httpd,centos
+      - httpd
+      - php
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: copy html file to web server
+  tags: apache,apache2,httpd
+  copy:
+    src: default_site.html
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start httpd(CentOS)
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+  when: ansible_distribution == "CentOS"
+
+- name: Edit Config file(CentOS)
+  lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^ServerAdmin'
+    line: ServerAdmin dummy@dummy.com
+  when: ansible_distribution == 'CentOS'
+  register: httpd #can be any name, works as a variable
+
+- name: Restart httpd service
+  service:
+    name: httpd
+    state: restarted
+  when: httpd.changed

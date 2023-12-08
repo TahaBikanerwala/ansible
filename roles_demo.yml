@@ -1,0 +1,35 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+  - name: Update paxkages index
+    tags: always
+    package:
+      update_cache: yes
+    changed_when: false
+
+- hosts: all
+  become: true
+  roles:
+    - base
+
+- hosts: workstations
+  become: true
+  roles:
+    - workstation
+
+- hosts: web_server
+  become: true
+  roles:
+    - web_server
+
+- hosts: db_server
+  become: true
+  roles:
+    - db_server
+
+- hosts: file_server
+  become: true
+  roles:
+    - file_server

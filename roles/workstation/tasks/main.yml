@@ -1,0 +1,14 @@
+- name: Install unzip
+  tags: workstation,popos
+  package:
+    name: unzip
+
+- name: Install terraform
+  tags: workstation,popos
+  unarchive:
+    src: https://releases.hashicorp.com/terraform/1.6.5/terraform_1.6.5_linux_386.zip
+    dest: /usr/local/bin/
+    remote_src: yes
+    mode: 0755
+    owner: root
+    group: root
