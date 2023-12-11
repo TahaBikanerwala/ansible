@@ -1,0 +1,4 @@
+- name: restart_apache #same as in tasks main.yml taskbook
+  service:
+    name: "{{ apache_service }}"
+    state: restarted

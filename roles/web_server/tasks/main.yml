@@ -48,8 +48,8 @@
   when: ansible_distribution == 'CentOS'
   notify: restart_apache #ca
 
-- name: Restart httpd service
-  service:
-    name: httpd
-    state: restarted
-  when: httpd.changed
+# - name: Restart httpd service
+#   service:
+#     name: httpd
+#     state: restarted
+#   when: httpd.changed
