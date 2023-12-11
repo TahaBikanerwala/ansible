@@ -2,8 +2,8 @@
   tags: apache,apache2,ubuntu
   apt:
     name:
-      - apache2
-      - php
+      - "{{ apache_package }}"
+      - "{{ php_package }}"
     state: latest
   when: ansible_distribution == "Ubuntu"
 
@@ -32,13 +32,21 @@
     enabled: yes
   when: ansible_distribution == "CentOS"
 
+# - name: Edit Config file(CentOS)
+#   lineinfile:
+#     path: /etc/httpd/conf/httpd.conf
+#     regexp: '^ServerAdmin'
+#     line: ServerAdmin dummy@dummy.com
+#   when: ansible_distribution == 'CentOS'
+#   register: httpd #can be any name, works as a variable
+
 - name: Edit Config file(CentOS)
   lineinfile:
     path: /etc/httpd/conf/httpd.conf
     regexp: '^ServerAdmin'
     line: ServerAdmin dummy@dummy.com
   when: ansible_distribution == 'CentOS'
-  register: httpd #can be any name, works as a variable
+  notify: restart_apache #ca
 
 - name: Restart httpd service
   service:
